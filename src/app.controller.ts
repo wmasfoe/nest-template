@@ -20,4 +20,9 @@ export class AppController {
   getMyUtil() {
     return this.appService.getMyCustomUtil();
   }
+
+  @Get('/debug-sentry')
+  getError() {
+    throw new Error('My first Sentry error!');
+  }
 }

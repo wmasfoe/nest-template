@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Global, Logger, Module } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import {
   HealthModule,
@@ -8,6 +8,7 @@ import {
   TracingInterceptor,
 } from '@tresdoce-nestjs-toolkit/paas';
 import { HttpClientInterceptor, HttpClientModule } from '@tresdoce-nestjs-toolkit/http-client';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 
 import { UtilsModule } from '@app/utils/utils.module';
 import { UsersModule } from '@app/modules';
@@ -18,6 +19,7 @@ import { AppService } from '@app/app.service';
 
 import { getEnvFilePath, config, validationSchema } from '@app/config';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +29,7 @@ import { getEnvFilePath, config, validationSchema } from '@app/config';
       isGlobal: true,
       validationSchema,
     }),
+    SentryModule.forRoot(),
     HealthModule,
     TracingModule,
     HttpClientModule,
@@ -36,6 +39,11 @@ import { getEnvFilePath, config, validationSchema } from '@app/config';
   ],
   controllers: [AppController],
   providers: [
+    Logger,
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
     AppService,
     {
       provide: APP_INTERCEPTOR,
@@ -50,5 +58,6 @@ import { getEnvFilePath, config, validationSchema } from '@app/config';
       useClass: HttpClientInterceptor,
     },
   ],
+  exports: [Logger]
 })
 export class AppModule {}

@@ -1,26 +1,33 @@
+import './instrument';
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
-import { ExceptionsFilter } from '@tresdoce-nestjs-toolkit/paas';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, {
-    logger: new Logger(),
-  });
+  const app = await NestFactory.create(AppModule);
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   const appConfig = app.get<ConfigService>(ConfigService)['internalConfig']['config'];
-  const { server, swagger, project } = appConfig;
+  const { server, swagger, project, version } = appConfig;
   const port: number = parseInt(server.port, 10) || 8080;
 
   app.setGlobalPrefix(`${server.context}`);
 
+  const versions = version ? version.split(',').map((v) => v?.trim()) : ['1'];
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: [...versions],
+    prefix: 'v',
+  });
+
   app.use([cookieParser(), compression(), helmet()]);
-  app.useGlobalFilters(new ExceptionsFilter(appConfig));
+  // app.useGlobalFilters(new ExceptionsFilter(appConfig));
 
   app.useGlobalPipes(
     new ValidationPipe({

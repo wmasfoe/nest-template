@@ -6,6 +6,8 @@ import * as PACKAGE_JSON from '../../package.json';
 export default registerAs(
   'config',
   (): Typings.AppConfig => ({
+    loggerEnabled: process.env.LOG_ON.toLowerCase() === 'true',
+    version: process.env.VERSION || '1',
     project: {
       apiPrefix: process.env.API_PREFIX || 'API-PREFIX',
       name: PACKAGE_JSON.name,
@@ -20,7 +22,7 @@ export default registerAs(
       isProd: process.env.NODE_ENV === 'production',
       appStage: process.env.APP_STAGE,
       port: parseInt(process.env.PORT, 10) || 8080,
-      context: process.env.CONTEXT || 'api/v1',
+      context: process.env.CONTEXT || 'api',
       origins: process.env.ORIGINS ? process.env.ORIGINS.split(',') : '*',
       allowedHeaders: process.env.ALLOWED_HEADERS,
       allowedMethods: process.env.ALLOWED_METHODS,

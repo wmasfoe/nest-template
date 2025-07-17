@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "description": "NestJS Starter - Server",
   "author": {
-    "name": "Maximiliano \"Mex\" Delgado",
-    "email": "mdelgado@tresdoce.com.ar",
-    "url": "https://rudemex.github.io/"
+    "name": "lijiaqi",
+    "email": "lijq1103@gmail.com",
+    "url": "https://justdev.cn"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rudemex/nestjs-starter.git"
+    "url": "git+https://github.com/wmasfoe/nest-template"
   },
   "bugs": {
-    "url": "https://github.com/rudemex/nestjs-starter/issues"
+    "url": "https://github.com/wmasfoe/nest-template/issues"
   },
-  "homepage": "https://github.com/rudemex/nestjs-starter#readme",
+  "homepage": "https://github.com/wmasfoe/nest-template#readme",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -67,6 +67,7 @@
     "@nestjs/platform-express": "^11.1.3",
     "@nestjs/swagger": "^11.2.0",
     "@prisma/client": "^6.12.0",
+    "@sentry/nestjs": "^9.40.0",
     "@tresdoce-nestjs-toolkit/http-client": "^2.0.6",
     "@tresdoce-nestjs-toolkit/paas": "^2.0.6",
     "class-transformer": "^0.5.1",
@@ -76,9 +77,12 @@
     "cross-env": "^7.0.3",
     "helmet": "^8.1.0",
     "joi": "^17.13.3",
+    "nest-winston": "^1.10.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.17.0",
+    "winston-transport": "^4.9.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -86,6 +90,7 @@
     "@nestjs/cli": "^11.0.7",
     "@nestjs/schematics": "^11.0.5",
     "@nestjs/testing": "^11.1.3",
+    "@sentry/webpack-plugin": "^3.6.0",
     "@tresdoce-nestjs-toolkit/commons": "^1.3.0",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.9",

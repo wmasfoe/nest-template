@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Logger, LoggerService, Param, Post, Put, Version } from '@nestjs/common';
 import {
   ApiBody,
   ApiExtraModels,
@@ -23,7 +23,10 @@ import { UserSwaggerDto } from '../dtos/user.swagger.dto';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   @ApiOperation({
     summary: 'Get all users with pagination',
@@ -49,8 +52,21 @@ export class UsersController {
   @ApiExtraModels(PaginationResponse, UserSwaggerDto)
   @ApiQuery({ type: PaginationParamsDto })
   @Get()
+  @Version('1')
   findAll(@Pagination() pagination?: PaginationParams): Promise<PaginationResponse<User>> {
+    this.logger.log('user.controller.findAll', pagination);
     return this.usersService.findAll(pagination);
+  }
+
+  @Get()
+  @Version('2')
+  async findAllV2(@Pagination() pagination?: PaginationParams): Promise<PaginationResponse<User> & { version: string }> {
+    this.logger.log('user.controller.findAllV2', pagination);
+    const res = await this.usersService.findAll(pagination);
+    return {
+      version: '2',
+      ...res,
+    };
   }
 
   @ApiOperation({
