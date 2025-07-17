@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { ArchetypeModule } from '@tresdoce-nestjs-toolkit/archetype';
 import {
   HealthModule,
   ResponseInterceptor,
@@ -10,14 +9,14 @@ import {
 } from '@tresdoce-nestjs-toolkit/paas';
 import { HttpClientInterceptor, HttpClientModule } from '@tresdoce-nestjs-toolkit/http-client';
 
-import { UtilsModule } from './utils/utils.module';
-import { UsersModule, CharactersModule } from './modules';
-import { CommonModule } from './common/common.module';
+import { UtilsModule } from '@app/utils/utils.module';
+import { UsersModule } from '@app/modules';
+import { CommonModule } from '@app/common/common.module';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from '@app/app.controller';
+import { AppService } from '@app/app.service';
 
-import { getEnvFilePath, config, validationSchema } from './config';
+import { getEnvFilePath, config, validationSchema } from '@app/config';
 
 @Module({
   imports: [
@@ -28,12 +27,10 @@ import { getEnvFilePath, config, validationSchema } from './config';
       isGlobal: true,
       validationSchema,
     }),
-    ArchetypeModule,
     HealthModule,
     TracingModule,
     HttpClientModule,
     UtilsModule,
-    CharactersModule,
     UsersModule,
     CommonModule,
   ],

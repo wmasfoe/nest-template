@@ -18,7 +18,7 @@ import {
 import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
-import { UserEntityDto } from '../dtos/user.entity.dto';
+import { UserSwaggerDto } from '../dtos/user.swagger.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -39,14 +39,14 @@ export class UsersController {
           properties: {
             data: {
               type: 'array',
-              items: { $ref: getSchemaPath(UserEntityDto) },
+              items: { $ref: getSchemaPath(UserSwaggerDto) },
             },
           },
         },
       ],
     },
   })
-  @ApiExtraModels(PaginationResponse, UserEntityDto)
+  @ApiExtraModels(PaginationResponse, UserSwaggerDto)
   @ApiQuery({ type: PaginationParamsDto })
   @Get()
   findAll(@Pagination() pagination?: PaginationParams): Promise<PaginationResponse<User>> {
@@ -59,7 +59,7 @@ export class UsersController {
   @ApiResponse({
     status: 200,
     description: 'Return user by id',
-    type: UserEntityDto,
+    type: UserSwaggerDto,
     isArray: false,
   })
   @ApiResponse({
@@ -83,7 +83,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'Return user created',
-    type: UserEntityDto,
+    type: UserSwaggerDto,
     isArray: false,
   })
   @Post()
@@ -97,7 +97,7 @@ export class UsersController {
   @ApiResponse({
     status: 201,
     description: 'Return user updated',
-    type: UserEntityDto,
+    type: UserSwaggerDto,
     isArray: false,
   })
   @Put(':id')

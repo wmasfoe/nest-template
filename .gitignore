@@ -55,14 +55,14 @@ codecov.*
 *.rar
 
 # ENVIROMENTS
-# ./*.env
-# ./.*.env
-# .*.env
-# ./.env.*
-# .env.*
-# .env
-# !.env.test
-# !.env.example
+./*.env
+./.*.env
+.*.env
+./.env.*
+.env.*
+.env
+!.env.test
+!.env.example
 
 # DATA
 .mongo_data
@@ -80,3 +80,13 @@ codecov.*
 .elasticsearch-data/*
 ./.elasticsearch-data
 
+# PRISMA
+prisma/migrations
+prisma/migrations/*
+./.prisma/migrations
+./.prisma/migrations/*
+
+prisma/seed
+prisma/seed/*
+./.prisma/seed
+./.prisma/seed/*
