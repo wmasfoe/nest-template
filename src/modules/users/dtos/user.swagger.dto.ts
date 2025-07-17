@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
-export class UserEntityDto implements User {
+export abstract class UserSwaggerDto implements User {
+  private constructor() {}
+
   @ApiProperty({
     description: 'The unique identifier of the user.',
     example: 1,

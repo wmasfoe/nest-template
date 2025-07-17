@@ -1,20 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '@app/common/services/prisma.service';
-import {
-  PaginationParams,
-  PaginationResponse,
-} from '@tresdoce-nestjs-toolkit/paas';
+import { PaginationParams, PaginationResponse } from '@tresdoce-nestjs-toolkit/paas';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll({
-    page = 1,
-    size = 10,
-  }: PaginationParams): Promise<PaginationResponse<User>> {
+  async findAll({ page = 1, size = 10 }: PaginationParams): Promise<PaginationResponse<User>> {
     const skip = (page - 1) * size;
     const take = size;
     const total = await this.prisma.user.count();
@@ -52,7 +46,7 @@ export class UsersService {
         where: { id },
         data: changes,
       });
-    } catch (error) {
+    } catch {
       throw new NotFoundException(`User #${id} not found`);
     }
   }
@@ -60,7 +54,7 @@ export class UsersService {
   async remove(id: number): Promise<User> {
     try {
       return await this.prisma.user.delete({ where: { id } });
-    } catch (error) {
+    } catch {
       throw new NotFoundException(`User #${id} not found`);
     }
   }

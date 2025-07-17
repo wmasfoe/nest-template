@@ -19,10 +19,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
-      "@app": ["./"],
-      "@app/*": ["./*"]
+      "@app": ["src"],
+      "@app/*": ["src/*"]
     }
   },
   "exclude": [
