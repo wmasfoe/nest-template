@@ -45,4 +45,4 @@ pnpm start:dev
 
 - [x] 数据库：mysql
 - [x] ORM：prisma
-- [ ] 日志：pino
+- [x] 日志：winston + sentry
