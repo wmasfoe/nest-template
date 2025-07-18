@@ -58,4 +58,8 @@ export class UsersService {
       throw new NotFoundException(`User #${id} not found`);
     }
   }
+
+  async findUserByUsername(username: string): Promise<User> {
+    return this.prisma.user.findFirst({ where: { name: username } });
+  }
 }
