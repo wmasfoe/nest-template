@@ -7,7 +7,7 @@ export default registerAs(
   'config',
   (): Typings.AppConfig => ({
     loggerEnabled: process.env.LOG_ON.toLowerCase() === 'true',
-    version: process.env.VERSION || '1',
+    version: process.env.VERSION,
     project: {
       apiPrefix: process.env.API_PREFIX || 'API-PREFIX',
       name: PACKAGE_JSON.name,
@@ -39,26 +39,9 @@ export default registerAs(
       path: process.env.SWAGGER_PATH || 'docs',
       enabled: process.env.SWAGGER_ENABLED.toLowerCase() === 'true',
     },
-    tracing: {
-      resourceAttributes: {
-        serviceName: `${PACKAGE_JSON.name}`,
-        version: PACKAGE_JSON.version,
-        'service.namespace': `${process.env.API_PREFIX}`,
-        'deployment.environment': process.env.APP_STAGE,
-      },
-      exporter: {
-        url: process.env.TRACING_ENDPOINT,
-      },
-    },
     params: {
       testEnv: process.env.TEST_KEY,
     },
-    services: {
-      rickAndMortyAPI: {
-        url: process.env.RICK_AND_MORTY_API_URL,
-        timeout: 3000,
-        healthPath: process.env.RICK_AND_MORTY_API_URL_LIVENESS,
-      },
-    },
+    services: {},
   }),
 );

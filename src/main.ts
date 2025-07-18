@@ -1,6 +1,6 @@
 import './instrument';
 import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -19,10 +19,10 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix(`${server.context}`);
 
-  const versions = version ? version.split(',').map((v) => v?.trim()) : ['1'];
+  const versions = version ? version.split(',').map((v) => v?.trim()) : VERSION_NEUTRAL;
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: [...versions],
+    defaultVersion: typeof version === 'undefined' ? VERSION_NEUTRAL : versions,
     prefix: 'v',
   });
 
@@ -33,7 +33,7 @@ async function bootstrap(): Promise<void> {
     new ValidationPipe({
       validatorPackage: require('@nestjs/class-validator'),
       transformerPackage: require('class-transformer'),
-      whitelist: true,
+      whitelist: true, // 过滤掉 dto 中没有定义的属性
       forbidUnknownValues: true,
       forbidNonWhitelisted: true,
       transformOptions: {

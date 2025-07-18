@@ -17,30 +17,30 @@ export class CreateUserDto {
   })
   readonly email: string;
 
-  @IsString()
-  @ApiProperty({
-    example: 'male',
-    description:
-      'The gender of the user. Possible values are "male", "female", or "x" for non-binary or unspecified.',
-  })
-  readonly gender: string;
+  // @IsString()
+  // @ApiProperty({
+  //   example: 'male',
+  //   description:
+  //     'The gender of the user. Possible values are "male", "female", or "x" for non-binary or unspecified.',
+  // })
+  // readonly gender: string;
 
-  @IsString()
-  @ApiProperty({
-    example: 'semi-senior',
-    description:
-      'The seniority level of the user within the organization. Possible values are "trainee", "jr", "semi-senior", and "senior".',
-  })
-  readonly seniority: string;
+  // @IsString()
+  // @ApiProperty({
+  //   example: 'semi-senior',
+  //   description:
+  //     'The seniority level of the user within the organization. Possible values are "trainee", "jr", "semi-senior", and "senior".',
+  // })
+  // readonly seniority: string;
 
-  @IsString()
-  @ApiProperty({
-    required: false,
-    example: '',
-    description:
-      "A brief description of the user's professional experience. This field is optional and can be left blank.",
-  })
-  readonly experience: string;
+  // @IsString()
+  // @ApiProperty({
+  //   required: false,
+  //   example: '',
+  //   description:
+  //     "A brief description of the user's professional experience. This field is optional and can be left blank.",
+  // })
+  // readonly experience: string;
 }
 
 export class UpdateUserDto {
