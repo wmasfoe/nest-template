@@ -31,6 +31,7 @@ import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserSwaggerDto } from '../dtos/user.swagger.dto';
+import { Public } from '@app/common/auth/decorators';
 
 @ApiTags('Users')
 @Controller('users')
@@ -102,6 +103,7 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
+  @Public()
   @ApiOperation({
     summary: 'Create user',
   })

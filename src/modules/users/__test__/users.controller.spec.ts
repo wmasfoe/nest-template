@@ -62,7 +62,13 @@ describe('UsersController', () => {
   });
 
   it('should call create on service', async () => {
-    const dto: CreateUserDto = { name: 'New User', email: 'new@example.com', gender: 'x', seniority: 'jr', experience: '' };
+    const dto: CreateUserDto = {
+      name: 'New User',
+      email: 'new@example.com',
+      gender: 'x',
+      seniority: 'jr',
+      experience: '',
+    };
     await controller.create(dto);
     expect(service.create).toHaveBeenCalledWith(dto);
   });
