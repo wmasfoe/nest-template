@@ -5,6 +5,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { UsersService } from '@app/modules/users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async signIn(account: string, pass: string): Promise<{ token: string } | Error> {
@@ -27,8 +29,8 @@ export class AuthService {
       const payload = { sub: user.id, name: user.name, email: user.email };
 
       const token = await this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_SECRET,
-        expiresIn: process.env.JWT_EXPIRES_IN,
+        secret: this.configService.get('config.jwt.secret'),
+        expiresIn: this.configService.get('config.jwt.expiresIn'),
       });
       return { token };
     } catch (error) {
