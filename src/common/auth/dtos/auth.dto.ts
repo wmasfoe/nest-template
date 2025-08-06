@@ -5,8 +5,8 @@ export class AuthLoginDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    example: 'Juan Perez',
-    description: 'The full name of the user.',
+    example: 'john@example.com',
+    description: 'User email address used as account identifier.',
   })
   readonly account: string;
 
@@ -14,8 +14,8 @@ export class AuthLoginDto {
   @Length(8, 16)
   @IsNotEmpty()
   @ApiProperty({
-    example: '12345678',
-    description: 'The password of the user.',
+    example: 'password123',
+    description: 'User password (8-16 characters).',
   })
   readonly password: string;
 }

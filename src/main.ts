@@ -50,6 +50,17 @@ async function bootstrap(): Promise<void> {
       .setExternalDoc('Documentation', project.homepage)
       .setContact(project.author.name, project.author.url, project.author.email)
       .addServer(`/${server.context}`)
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          name: 'JWT',
+          description: 'Enter JWT token',
+          in: 'header',
+        },
+        'bearer',
+      )
       .build();
     const document: OpenAPIObject = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: true,
