@@ -1,7 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 
-export abstract class UserSwaggerDto implements User {
+export abstract class UserSwaggerDto
+  implements Pick<User, 'id' | 'email' | 'name' | 'createdAt' | 'updatedAt'>
+{
   private constructor() {}
 
   @ApiProperty({
