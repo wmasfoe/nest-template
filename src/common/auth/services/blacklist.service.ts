@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { BlacklistStatistics, JwtPayload } from '../types/auth.types';
 
@@ -7,7 +7,10 @@ export class BlacklistService {
   private blacklistedTokens = new Set<string>();
   private userTokens = new Map<number, Set<string>>(); // userId -> Set<token>
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   /**
    * 将token加入黑名单
@@ -34,19 +37,19 @@ export class BlacklistService {
             if (decoded.sub) {
               this.userTokens.get(decoded.sub)?.delete(token);
             }
-            console.log(
+            this.logger.log(
               `Token ${token.substring(0, 20)}... automatically removed from blacklist after expiry`,
             );
           }, expiryTime);
         }
 
-        console.log('Token added to blacklist', {
+        this.logger.log('Token added to blacklist', {
           userId: decoded.sub,
           tokenPrefix: token.substring(0, 20) + '...',
         });
       }
     } catch (error) {
-      console.error('Failed to add token to blacklist', {
+      this.logger.error('Failed to add token to blacklist', {
         error: error.message,
         tokenPrefix: token.substring(0, 20) + '...',
       });
@@ -73,7 +76,7 @@ export class BlacklistService {
         count++;
       });
 
-      console.log('All user tokens blacklisted', {
+      this.logger.log('All user tokens blacklisted', {
         userId,
         tokenCount: count,
       });
