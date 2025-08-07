@@ -1,9 +1,7 @@
 import { Global, Logger, Module } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { HealthModule, ResponseInterceptor } from '@tresdoce-nestjs-toolkit/paas';
-import { HttpClientInterceptor, HttpClientModule } from '@tresdoce-nestjs-toolkit/http-client';
-import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
+import { HealthModule } from '@tresdoce-nestjs-toolkit/paas';
+import { SentryModule } from '@sentry/nestjs/setup';
 
 import { UtilsModule } from '@app/utils/utils.module';
 import { UsersModule } from '@app/modules';
@@ -25,7 +23,6 @@ import { getEnvFilePath, config } from '@app/config';
     }),
     SentryModule.forRoot(),
     HealthModule,
-    HttpClientModule,
     UtilsModule,
     UsersModule,
     CommonModule,
@@ -33,19 +30,8 @@ import { getEnvFilePath, config } from '@app/config';
   controllers: [AppController],
   providers: [
     Logger,
-    {
-      provide: APP_FILTER,
-      useClass: SentryGlobalFilter,
-    },
     AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ResponseInterceptor,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: HttpClientInterceptor,
-    },
+    // ResponseModule 已通过 CommonModule 自动注册全局拦截器和过滤器
   ],
   exports: [Logger],
 })

@@ -1,11 +1,13 @@
-import { IsEmail, IsOptional, IsString, Length } from '@nestjs/class-validator';
+import { IsEmail, IsOptional, IsString, Length, IsNotEmpty } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @IsString()
+  @IsOptional()
   @ApiProperty({
     example: 'Juan Perez',
     description: 'The full name of the user.',
+    required: false,
   })
   readonly name: string;
 
@@ -19,6 +21,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsEmail()
+  @IsNotEmpty()
   @ApiProperty({
     example: 'juan.perez@mail.com',
     description: 'The email address of the user. It is unique and used for login.',
