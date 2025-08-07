@@ -71,7 +71,13 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should create a new user', async () => {
-      const dto: CreateUserDto = { name: 'New User', email: 'new@example.com', gender: 'x', seniority: 'jr', experience: '' };
+      const dto: CreateUserDto = {
+        name: 'New User',
+        email: 'new@example.com',
+        gender: 'x',
+        seniority: 'jr',
+        experience: '',
+      };
       await service.create(dto);
       expect(prisma.user.create).toHaveBeenCalledWith({ data: dto });
     });

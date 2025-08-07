@@ -5,6 +5,12 @@ export abstract class UserSwaggerDto implements User {
   private constructor() {}
 
   @ApiProperty({
+    description: 'The password of the user.',
+    example: '123456',
+  })
+  password: string;
+
+  @ApiProperty({
     description: 'The unique identifier of the user.',
     example: 1,
   })

@@ -6,8 +6,12 @@ import * as PACKAGE_JSON from '../../package.json';
 export default registerAs(
   'config',
   (): Typings.AppConfig => ({
-    loggerEnabled: process.env.LOG_ON.toLowerCase() === 'true',
+    loggerEnabled: process.env.LOG_ON?.toLowerCase?.() === 'true',
     version: process.env.VERSION,
+    jwt: {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+    },
     project: {
       apiPrefix: process.env.API_PREFIX || 'API-PREFIX',
       name: PACKAGE_JSON.name,
@@ -29,8 +33,8 @@ export default registerAs(
       propagateHeaders: process.env.PROPAGATE_HEADERS
         ? process.env.PROPAGATE_HEADERS.split(',')
         : [],
-      corsEnabled: process.env.CORS_ENABLED.toLowerCase() === 'true',
-      corsCredentials: process.env.CORS_CREDENTIALS.toLowerCase() === 'true',
+      corsEnabled: process.env.CORS_ENABLED?.toLowerCase?.() === 'true',
+      corsCredentials: process.env.CORS_CREDENTIALS?.toLowerCase?.() === 'true',
     },
     health: {
       skipChecks: getSkipHealthChecks(process.env.SKIP_HEALTH_CHECKS),

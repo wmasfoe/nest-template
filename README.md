@@ -39,6 +39,12 @@ npm run prisma:migrate:dev
 pnpm start:dev
 ```
 
+安装 NestCLI（可选）：
+
+```sh
+pnpm install -g @nestjs/cli
+```
+
 ### TODO
 
 基于 https://github.com/rudemex/nestjs-starter 二次开发
@@ -46,3 +52,36 @@ pnpm start:dev
 - [x] 数据库：mysql
 - [x] ORM：prisma
 - [x] 日志：winston + sentry
+
+## 快速上手
+
+### 目录约定
+
+- 业务模块：`src/modules`
+- 公共模块：`src/common`
+- 配置：`src/config`
+- 工具：`src/utils`
+- 测试：`src/test`
+
+> 所有的业务模块都放在 `src/modules` 目录下，举个例子，用户模块的目录结构如下：
+
+```
+src/modules/users/
+├── dtos
+├── controllers
+├── services
+├── entities
+├── dtos
+```
+
+NestCLI 提供了一些命令，可以快速生成一些文件，常用的有：
+
+```sh
+# 生成一个资源
+nest g resource users
+
+# 生成一个模块
+nest g module users
+
+# 生成一个控制器
+```

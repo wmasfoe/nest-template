@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import * as Sentry from '@sentry/nestjs';
 import Transport from 'winston-transport';
@@ -10,6 +10,7 @@ const SentryWinstonTransport = Sentry.createSentryWinstonTransport(Transport, {
   levels: ['error', 'warn', 'info', 'trace', 'fatal'],
 });
 
+@Global()
 @Module({
   imports: [
     WinstonModule.forRootAsync({
