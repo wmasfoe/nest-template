@@ -31,7 +31,8 @@ import { User } from '@prisma/client';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserSwaggerDto } from '../dtos/user.swagger.dto';
-import { Public } from '@app/common/auth/decorators';
+import { CurrentUser, Public } from '@app/common/auth/decorators';
+import { JwtUser } from '@app/common/auth/types';
 
 @ApiTags('Users')
 @Controller('users')
@@ -99,7 +100,8 @@ export class UsersController {
     isArray: false,
   })
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<User> {
+  findOne(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<User> {
+    this.logger.log('user.controller.findOne', id, user);
     return this.usersService.findOne(+id);
   }
 
@@ -146,7 +148,8 @@ export class UsersController {
     //isArray: false,
   })
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<any> {
+  remove(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<any> {
+    this.logger.log('user.controller.remove', id, user);
     return this.usersService.remove(+id);
   }
 }
