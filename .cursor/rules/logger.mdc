@@ -3,64 +3,107 @@ alwaysApply: true
 ---
 # Logs
 
-Where logs are used, ensure Sentry is imported using `import * as Sentry from "@sentry/node"`
-Enable logging in Sentry using `Sentry.init({ _experiments: { enableLogs: true } })`
-Reference the logger using `const { logger } = Sentry`
-Sentry offers a `consoleLoggingIntegration` that can be used to log specific console error types automatically without instrumenting the individual logger calls
+本项目使用 Winston + Sentry 集成的日志系统。LoggerModule 已注册为全局模块，可在任何地方通过依赖注入使用。
 
-## Configuration
+## Logger 使用方式
 
-The Sentry initialization needs to be updated to enable the logs feature.
+### 在控制器和服务中使用
 
-### Baseline
+通过构造函数注入 Logger：
 
-```javascript
-import * as Sentry from "@sentry/node";
+```typescript
+import { Logger, LoggerService, Injectable } from '@nestjs/common';
 
-Sentry.init({
-  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
+@Injectable()
+export class YourService {
+  constructor(
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
-  _experiments: {
-    enableLogs: true,
-  },
-});
+  someMethod() {
+    // 支持多参数日志
+    this.logger.log('用户操作', { userId: 123, action: 'login' });
+    this.logger.error('操作失败', error, { context: 'additional data' });
+    this.logger.warn('警告信息', { level: 'high' });
+    this.logger.debug('调试信息', debugData);
+  }
+}
 ```
 
-### Logger Integration
+### 导入要求
 
-```javascript
-Sentry.init({
-  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
-  integrations: [
-    // send console.log, console.error, and console.warn calls as logs to Sentry
-    Sentry.consoleLoggingIntegration({ levels: ["log", "error", "warn"] }),
-  ],
-});
+```typescript
+import { Logger, LoggerService, Inject } from '@nestjs/common';
 ```
 
-## Logger Examples
+## 配置说明
 
-`logger.fmt` is a template literal function that should be used to bring variables into the structured logs.
+LoggerModule 已配置为全局模块，包含：
+- **开发环境**: Winston Console 输出，支持颜色区分
+- **生产环境**: 通过 SentryWinstonTransport 发送到 Sentry
+- **日志级别**: error, warn, info, debug, trace
 
-```javascript
-import * as Sentry from "@sentry/node";
+## 日志级别和颜色
 
-const { logger } = Sentry;
+- `logger.error()` - 红色，错误信息
+- `logger.warn()` - 黄色，警告信息  
+- `logger.log()` - 绿色，一般信息
+- `logger.debug()` - 灰色，调试信息
 
-logger.trace("Starting database connection", { database: "users" });
-logger.debug(logger.fmt`Cache miss for user: ${userId}`);
-logger.info("Updated profile", { profileId: 345 });
-logger.warn("Rate limit reached for endpoint", {
-  endpoint: "/api/results/",
-  isEnterprise: false,
-});
-logger.error("Failed to process payment", {
-  orderId: "order_123",
-  amount: 99.99,
-});
-logger.fatal("Database connection pool exhausted", {
-  database: "users",
-  activeConnections: 100,
-});
+## 使用示例
+
+```typescript
+import { Controller, Get, Logger, LoggerService, Inject } from '@nestjs/common';
+
+@Controller('example')
+export class ExampleController {
+  constructor(
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
+
+  @Get()
+  findAll() {
+    // 基础日志
+    this.logger.log('获取所有用户列表');
+    
+    // 带上下文的结构化日志
+    this.logger.log('用户查询', { action: 'findAll', timestamp: new Date() });
+    
+    // 多参数支持
+    this.logger.log('查询参数', { page: 1 }, { limit: 10 });
+    
+    // 错误日志
+    this.logger.error('查询失败', error, { userId, operation: 'findAll' });
+    
+    // 警告日志
+    this.logger.warn('性能警告', { queryTime: 1500, threshold: 1000 });
+  }
+}
 ```
 
+## 最佳实践
+
+1. **使用结构化日志**: 将相关数据作为对象传递，便于后续分析
+2. **包含上下文信息**: 添加 userId、requestId、operation 等关键信息
+3. **合适的日志级别**: 
+   - `error`: 系统错误，需要立即关注
+   - `warn`: 可能的问题，需要监控
+   - `log`: 正常的业务操作记录
+   - `debug`: 开发调试信息
+4. **避免敏感信息**: 不要记录密码、token 等敏感数据
+
+## 全局可用
+
+由于 LoggerModule 已注册为全局模块，无需在每个模块中重复导入，可直接在任何服务或控制器中注入使用。
+
+## 注意事项
+
+logger 在进行控制台输出与日志上报时需要放到一个对象中，并不能像原生 Javascript 的 console.log 一样支持多个参数，举个例子：
+
+```js
+// 现在进行多个数据的输出
+this.logger.log('当前用户为：', {
+  name,
+  email
+})
+```
