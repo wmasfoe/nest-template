@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-starter",
+  "name": "nestjs-template",
   "version": "1.0.0",
-  "description": "NestJS Starter - Server",
+  "description": "NestJS Template - Server",
   "author": {
     "name": "lijiaqi",
     "email": "lijq1103@gmail.com",
@@ -17,6 +17,7 @@
   "homepage": "https://github.com/wmasfoe/nest-template#readme",
   "private": true,
   "license": "MIT",
+
   "scripts": {
     "clean": "rimraf coverage dist node_modules junit.xml test-report.xml yarn.lock package-lock.json",
     "prebuild": "rimraf dist",
@@ -24,8 +25,8 @@
     "start": "cross-env NODE_ENV=production node dist/main",
     "start:dev": "cross-env NODE_ENV=dev nest start --watch",
     "start:debug": "cross-env NODE_ENV=dev nest start --debug --watch",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format": "prettier --write \"apps/**/*.ts\" \"packages/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{apps,packages,test}/**/*.ts\" --fix",
     "pre-commit": "lint-staged",
     "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "test:husky": "jest --runInBand --forceExit --coverage",
