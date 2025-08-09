@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 
-import { AppModule } from '../src/app.module';
-import { CreateUserDto, UpdateUserDto } from '../src/modules/users/dtos/user.dto';
+import { AppModule } from '../apps/server/app.module';
+import { CreateUserDto, UpdateUserDto } from '../apps/server/modules/users/dtos/user.dto';
 
 jest.setTimeout(80000);
 describe('AppController (e2e)', () => {
@@ -138,12 +138,9 @@ describe('AppController (e2e)', () => {
 
   it('(POST) /users', async () => {
     const payload: CreateUserDto = {
-      firstName: 'Juan',
-      lastName: 'Perez',
+      name: 'Juan',
       email: 'jperez@email.com',
-      gender: 'male',
-      seniority: 'trainee',
-      experience: '',
+      password: '12345678',
     };
     return request(app.getHttpServer())
       .post('/users')
@@ -154,21 +151,13 @@ describe('AppController (e2e)', () => {
         expect(res.body).toEqual(expect.any(Object));
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('email');
-        expect(res.body).toHaveProperty('firstName');
-        expect(res.body).toHaveProperty('lastName');
-        expect(res.body).toHaveProperty('gender');
-        expect(res.body).toHaveProperty('seniority');
-        expect(res.body).toHaveProperty('experience');
         expect(res.body.email).toEqual(payload.email);
-        expect(res.body.firstName).toEqual(payload.firstName);
-        expect(res.body.lastName).toEqual(payload.lastName);
       });
   });
 
   it('(PUT) /users/{id}', async () => {
     const payload: UpdateUserDto = {
-      firstName: 'TestName',
-      lastName: 'TestLastname',
+      name: 'TestName',
       email: 'testmail@email.com',
     };
     return request(app.getHttpServer())
@@ -180,14 +169,7 @@ describe('AppController (e2e)', () => {
         expect(res.body).toEqual(expect.any(Object));
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('email');
-        expect(res.body).toHaveProperty('firstName');
-        expect(res.body).toHaveProperty('lastName');
-        expect(res.body).toHaveProperty('gender');
-        expect(res.body).toHaveProperty('seniority');
-        expect(res.body).toHaveProperty('experience');
         expect(res.body.email).toEqual(payload.email);
-        expect(res.body.firstName).toEqual(payload.firstName);
-        expect(res.body.lastName).toEqual(payload.lastName);
       });
   });
 
