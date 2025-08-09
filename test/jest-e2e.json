@@ -9,5 +9,10 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@app/(.*)$": "<rootDir>/../apps/server/$1",
+    "^@packages/core/(.*)$": "<rootDir>/../packages/core/$1",
+    "^@packages/shared/(.*)$": "<rootDir>/../packages/shared/$1"
   }
 }

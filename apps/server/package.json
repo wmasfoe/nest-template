@@ -1,0 +1,21 @@
+{
+  "name": "@apps/server",
+  "version": "1.0.0",
+  "description": "NestJS Server Application",
+  "main": "main.ts",
+  "private": true,
+  "dependencies": {
+    "@packages/core": "workspace:*",
+    "@packages/shared": "workspace:*",
+    "@nestjs/common": "*",
+    "@nestjs/core": "*",
+    "@nestjs/config": "*",
+    "@nestjs/swagger": "*",
+    "@tresdoce-nestjs-toolkit/paas": "*",
+    "@sentry/nestjs": "*"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.1.3",
+    "@nestjs/core": "^11.1.3"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@packages/core",
+  "version": "1.0.0",
+  "description": "Core modules for NestJS application",
+  "main": "index.ts",
+  "private": true,
+  "dependencies": {
+    "@nestjs/common": "*",
+    "@nestjs/core": "*",
+    "@nestjs/jwt": "*",
+    "@nestjs/passport": "*",
+    "@prisma/client": "*",
+    "passport": "*",
+    "passport-jwt": "*",
+    "passport-local": "*",
+    "nest-winston": "*",
+    "winston": "*",
+    "winston-transport": "*",
+    "@sentry/nestjs": "*"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.1.3",
+    "@nestjs/core": "^11.1.3"
+  }
+}

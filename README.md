@@ -85,3 +85,33 @@ nest g module users
 
 # 生成一个控制器
 ```
+
+## 架构设计
+
+```txt
+monorepo/
+├── bootstrap/              # 启动模块
+│   ├── main.ts            # 应用入口
+│   ├── app.module.ts      # 主应用模块
+│   └── bootstrap.service.ts # 启动逻辑(加载 core 层核心模块 -> 加载 apps/backend 层业务模块)
+├── apps/
+│   ├── backend/           # 后端业务层
+│   │   └── modules/       # 纯业务模块
+│   └── frontend/          # 前端应用
+├── packages/
+│   ├── core/              # 核心功能模块
+│   │   ├── auth/
+│   │   ├── logger/
+│   │   ├── response/
+│   │   ├── database/
+│   │   └── config/
+│   ├── shared/            # 共享类型定义
+│   │   ├── types/
+│   │   ├── interfaces/
+│   │   ├── enums/
+│   │   └── constants/
+│   └── validator/         # 共享验证逻辑
+│       ├── schemas/
+│       ├── decorators/
+│       └── pipes/
+```
