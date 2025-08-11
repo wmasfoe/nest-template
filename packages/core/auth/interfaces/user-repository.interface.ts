@@ -8,6 +8,5 @@ export interface AuthUser {
 }
 
 export interface IUserAuthRepository {
-  findUserByEmail(email: string): Promise<AuthUser>;
-  findUserByUsername(username: string): Promise<AuthUser>;
+  findUserByEmail(email: string): Promise<AuthUser | null>;
 }

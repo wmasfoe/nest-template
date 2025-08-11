@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '@app/services/prisma.service';
 import {
@@ -10,7 +10,10 @@ import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UsersService implements IUserAuthRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly logger: Logger,
+  ) {}
 
   async findAll({ page = 1, size = 10 }: PaginationParams): Promise<PaginationResponse<User>> {
     const skip = (page - 1) * size;
@@ -68,6 +71,14 @@ export class UsersService implements IUserAuthRepository {
   }
 
   async findUserByEmail(email: string): Promise<AuthUser | null> {
-    return this.prisma.user.findFirst({ where: { email } });
+    try {
+      return this.prisma.user.findFirst({ where: { email } });
+    } catch (error) {
+      this.logger.warn('没有通过email查询到用户', {
+        email,
+        error,
+      });
+      return null;
+    }
   }
 }
