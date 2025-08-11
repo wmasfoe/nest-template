@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module, Type } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -12,7 +12,7 @@ import { BlacklistService } from './services/blacklist.service';
 import { APP_GUARD } from '@nestjs/core';
 
 export interface AuthModuleOptions {
-  userRepository: any; // 用户仓库实现类
+  userRepository: Type<any>; // 用户仓库实现类（类类型）
 }
 
 @Module({})
@@ -35,7 +35,7 @@ export class AuthModule {
       providers: [
         options.userRepository, // 先注册用户服务类
         {
-          provide: 'IUserRepository',
+          provide: 'IUserAuthRepository',
           useExisting: options.userRepository,
         },
         AuthService,

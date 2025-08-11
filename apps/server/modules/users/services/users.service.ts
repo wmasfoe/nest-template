@@ -1,12 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from '@app/services/prisma.service';
-import { IUserRepository } from '@packages/core/auth/interfaces/user-repository.interface';
+import {
+  AuthUser,
+  IUserAuthRepository,
+} from '@packages/core/auth/interfaces/user-repository.interface';
 import { PaginationParams, PaginationResponse } from '@tresdoce-nestjs-toolkit/paas';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 @Injectable()
-export class UsersService implements IUserRepository {
+export class UsersService implements IUserAuthRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll({ page = 1, size = 10 }: PaginationParams): Promise<PaginationResponse<User>> {
@@ -60,11 +63,11 @@ export class UsersService implements IUserRepository {
     }
   }
 
-  async findUserByUsername(username: string): Promise<User> {
+  async findUserByUsername(username: string): Promise<AuthUser | null> {
     return this.prisma.user.findFirst({ where: { name: username } });
   }
 
-  async findUserByEmail(email: string): Promise<User> {
+  async findUserByEmail(email: string): Promise<AuthUser | null> {
     return this.prisma.user.findFirst({ where: { email } });
   }
 }

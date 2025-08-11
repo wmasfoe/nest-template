@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@n
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { BlacklistService } from './services/blacklist.service';
-import { IUserRepository } from './interfaces/user-repository.interface';
+import { AuthUser, IUserAuthRepository } from './interfaces/user-repository.interface';
 import {
   SafeUser,
   JwtPayload,
@@ -11,7 +11,6 @@ import {
   ForceLogoutResponse,
   BlacklistStatistics,
 } from './types/auth.types';
-import { User } from '@prisma/client';
 import { Inject } from '@nestjs/common';
 
 import { omit } from 'lodash';
@@ -19,7 +18,7 @@ import { omit } from 'lodash';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    @Inject('IUserAuthRepository') private readonly userRepository: IUserAuthRepository,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly blacklistService: BlacklistService,
@@ -36,7 +35,7 @@ export class AuthService {
   }
 
   // 生成JWT token的方法
-  async login(user: Pick<User, 'email' | 'password'>): Promise<LoginResponse> {
+  async login(user: Pick<AuthUser, 'email' | 'password'>): Promise<LoginResponse> {
     const curUser = await this.validateUser(user.email, user.password);
     if (!curUser) {
       throw new UnauthorizedException('Invalid credentials');
