@@ -1,6 +1,13 @@
-import { User } from '@prisma/client';
+export interface AuthUser {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-export interface IUserRepository {
-  findUserByEmail(email: string): Promise<User | null>;
-  findUserByUsername(username: string): Promise<User | null>;
+export interface IUserAuthRepository {
+  findUserByEmail(email: string): Promise<AuthUser>;
+  findUserByUsername(username: string): Promise<AuthUser>;
 }

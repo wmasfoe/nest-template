@@ -1,10 +1,11 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
+import type { IUserAuthRepository } from './auth/interfaces/user-repository.interface';
+import { DynamicModule, Global, Module, Type } from '@nestjs/common';
 import { LoggerModule } from './logger/logger.module';
 import { AuthModule } from './auth/auth.module';
 import { ResponseModule } from './response/response.module';
 
 export interface CoreModuleOptions {
-  userRepository: any; // 用户仓库实现类
+  userRepository: Type<IUserAuthRepository>; // 用户仓库实现类（传入类类型）
 }
 
 @Global()

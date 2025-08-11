@@ -1,10 +1,10 @@
-import { User } from '@prisma/client';
 import { Request } from 'express';
+import { AuthUser } from '../interfaces/user-repository.interface';
 
 // 用户认证相关类型定义
 
 // 用户登录后的安全用户信息（不包含密码）
-export type SafeUser = Omit<User, 'password'>;
+export type SafeUser = Omit<AuthUser, 'password'>;
 
 // JWT Token Payload
 export interface JwtPayload {
@@ -61,7 +61,7 @@ export interface AuthenticatedRequest extends Request {
 
 export interface LoginRequest extends Request {
   body: {
-    account: User['email'];
-    password: User['password'];
+    account: AuthUser['email'];
+    password: AuthUser['password'];
   };
 }
