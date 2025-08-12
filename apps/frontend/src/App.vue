@@ -1,29 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import type { 
+  BaseResponse, 
+  PaginationResponse, 
+  User, 
+  LoginRequest,
+  LoginResponse
+} from '@packages/shared';
+import { ROUTES } from '@packages/shared';
 
-const userList = ref([]);
+const userList = ref<User[]>([]);
 
 const handleFetchUserList = async () => {
-  const res = await fetch('/api/users', {
+  const res = await fetch(ROUTES.USERS.LIST, {
     headers: {
       Authorization: `Bearer ${curToken.value}`,
       'Content-Type': 'application/json',
     },
   });
 
-  const data = await res.json();
+  const data: PaginationResponse<User> = await res.json();
   userList.value = data.data.tableResult;
 };
 
-const curToken = ref('');
+const curToken = ref<string>('');
 
-const loginForm = ref({
+const loginForm = ref<LoginRequest>({
   account: 'admin@gmail.com',
   password: '12345678',
 });
 
 const handleLogin = async () => {
-  const res = await fetch('/api/auth/login', {
+  const res = await fetch(ROUTES.AUTH.LOGIN, {
     method: 'POST',
     headers: {
       // 必须要 content-type 否则后端中间件会拦截
@@ -32,7 +40,7 @@ const handleLogin = async () => {
     body: JSON.stringify(loginForm.value),
   })
 
-  const data = await res.json();
+  const data: BaseResponse<LoginResponse> = await res.json();
   curToken.value = data.data.access_token;
 };
 </script>

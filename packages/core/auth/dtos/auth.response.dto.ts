@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
+import type {
+  LoginResponse,
+  LogoutResponse,
+  JwtUser,
+  ForceLogoutResponse,
+  BlacklistStatistics,
+} from '@packages/shared';
 
 // 登录响应DTO
-export class LoginResponseDto {
+export class LoginResponseDto implements LoginResponse {
   @ApiProperty({
     description: 'JWT access token',
     example:
@@ -11,7 +18,7 @@ export class LoginResponseDto {
 }
 
 // 用户信息响应DTO
-export class UserProfileResponseDto {
+export class UserProfileResponseDto implements JwtUser {
   @ApiProperty({
     description: 'User ID',
     example: 1,
@@ -32,7 +39,7 @@ export class UserProfileResponseDto {
 }
 
 // 登出响应DTO
-export class LogoutResponseDto {
+export class LogoutResponseDto implements LogoutResponse {
   @ApiProperty({
     description: 'Logout success message',
     example: 'Logged out successfully',
@@ -41,7 +48,7 @@ export class LogoutResponseDto {
 }
 
 // 强制登出响应DTO
-export class ForceLogoutResponseDto {
+export class ForceLogoutResponseDto implements ForceLogoutResponse {
   @ApiProperty({
     description: 'Force logout message',
     example: 'User 1 has been forced to logout',
@@ -71,7 +78,7 @@ export class UserTokenCountDto {
 }
 
 // 黑名单统计响应DTO
-export class BlacklistStatisticsResponseDto {
+export class BlacklistStatisticsResponseDto implements BlacklistStatistics {
   @ApiProperty({
     description: 'Total number of blacklisted tokens',
     example: 15,

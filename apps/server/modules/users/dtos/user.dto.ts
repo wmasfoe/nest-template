@@ -1,7 +1,9 @@
 import { IsEmail, IsOptional, IsString, Length, IsNotEmpty } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import type { CreateUserRequest } from '@packages/shared';
+import { USER_CONSTRAINTS } from '@packages/shared';
 
-export class CreateUserDto {
+export class CreateUserDto implements CreateUserRequest {
   @IsString()
   @IsOptional()
   @ApiProperty({
@@ -12,7 +14,7 @@ export class CreateUserDto {
   readonly name: string;
 
   @IsString()
-  @Length(8, 16)
+  @Length(USER_CONSTRAINTS.password.minLength, USER_CONSTRAINTS.password.maxLength)
   @ApiProperty({
     example: '12345678',
     description: 'The password of the user.',
@@ -29,7 +31,7 @@ export class CreateUserDto {
   readonly email: string;
 }
 
-export class UpdateUserDto {
+export class UpdateUserDto implements Partial<CreateUserRequest> {
   @IsString()
   @IsOptional()
   @ApiProperty({
@@ -48,6 +50,7 @@ export class UpdateUserDto {
   readonly email?: string;
 
   @IsString()
+  @Length(USER_CONSTRAINTS.password.minLength, USER_CONSTRAINTS.password.maxLength)
   @IsOptional()
   @ApiProperty({
     example: '123456',

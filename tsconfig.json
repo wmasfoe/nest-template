@@ -22,7 +22,11 @@
     "baseUrl": "./",
     "paths": {
       "@app": ["apps/server"],
-      "@app/*": ["apps/server/*"]
+      "@app/*": ["apps/server/*"],
+      "@packages/shared": ["packages/shared"],
+      "@packages/shared/*": ["packages/shared/*"],
+      "@packages/core": ["packages/core"],
+      "@packages/core/*": ["packages/core/*"]
     }
   },
   "exclude": [

@@ -27,7 +27,7 @@ import {
   PaginationParamsDto,
 } from '@tresdoce-nestjs-toolkit/paas';
 
-import { User } from '@prisma/client';
+import type { User as PrismaUser } from '@prisma/client';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserSwaggerDto } from '../dtos/user.swagger.dto';
@@ -66,7 +66,7 @@ export class UsersController {
   @ApiExtraModels(UserSwaggerDto)
   @ApiQuery({ type: PaginationParamsDto })
   @Get() // api/users
-  findAll(@Pagination() pagination?: PaginationParams): Promise<PaginationResponse<User>> {
+  findAll(@Pagination() pagination?: PaginationParams): Promise<PaginationResponse<PrismaUser>> {
     this.logger.log('user.controller.findAll', pagination);
     return this.usersService.findAll(pagination);
   }
@@ -75,7 +75,7 @@ export class UsersController {
   @Get() // api/v2/users
   async findAllV2(
     @Pagination() pagination?: PaginationParams,
-  ): Promise<PaginationResponse<User> & { version: string }> {
+  ): Promise<PaginationResponse<PrismaUser> & { version: string }> {
     this.logger.log('user.controller.findAllV2', pagination);
     const res = await this.usersService.findAll(pagination);
     return {
@@ -100,7 +100,7 @@ export class UsersController {
     isArray: false,
   })
   @Get(':id')
-  findOne(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<User> {
+  findOne(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<PrismaUser> {
     this.logger.log('user.controller.findOne', id, user);
     return this.usersService.findOne(+id);
   }
@@ -120,7 +120,7 @@ export class UsersController {
     isArray: false,
   })
   @Post()
-  create(@Body() payload: CreateUserDto): Promise<User> {
+  create(@Body() payload: CreateUserDto): Promise<PrismaUser> {
     return this.usersService.create(payload);
   }
 
@@ -134,7 +134,7 @@ export class UsersController {
     isArray: false,
   })
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: UpdateUserDto): Promise<User> {
+  update(@Param('id') id: number, @Body() payload: UpdateUserDto): Promise<PrismaUser> {
     return this.usersService.update(+id, payload);
   }
 
@@ -148,7 +148,7 @@ export class UsersController {
     //isArray: false,
   })
   @Delete(':id')
-  remove(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<any> {
+  remove(@Param('id') id: number, @CurrentUser() user: JwtUser): Promise<PrismaUser> {
     this.logger.log('user.controller.remove', id, user);
     return this.usersService.remove(+id);
   }

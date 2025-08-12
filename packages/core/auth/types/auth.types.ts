@@ -1,58 +1,30 @@
 import { Request } from 'express';
 import { AuthUser } from '../interfaces/user-repository.interface';
+import type {
+  JwtPayload,
+  JwtUser,
+  LoginResponse,
+  LogoutResponse,
+  ForceLogoutResponse,
+  BlacklistStatistics,
+  UserTokenCount,
+} from '@packages/shared';
 
 // 用户认证相关类型定义
 
 // 用户登录后的安全用户信息（不包含密码）
 export type SafeUser = Omit<AuthUser, 'password'>;
 
-// JWT Token Payload
-export interface JwtPayload {
-  sub: number; // 用户ID
-  name: string;
-  email: string;
-  iat?: number; // issued at
-  exp?: number; // expires at
-}
-
-// JWT 验证后的用户信息
-export interface JwtUser {
-  userId: number;
-  name: string;
-  email: string;
-}
-
-// 登录响应
-export interface LoginResponse {
-  access_token: string;
-}
-
-// 登出响应
-export interface LogoutResponse {
-  message: string;
-}
-
-// 强制登出响应
-export interface ForceLogoutResponse {
-  message: string;
-  revokedTokens: number;
-}
-
-// 黑名单统计信息
-export interface BlacklistStatistics {
-  totalBlacklistedTokens: number;
-  totalUsers: number;
-  userTokenCounts: Array<{
-    userId: number;
-    tokenCount: number;
-  }>;
-}
-
-// 用户token统计
-export interface UserTokenCount {
-  userId: number;
-  tokenCount: number;
-}
+// 重新导出 shared 类型，保持向后兼容
+export type {
+  JwtPayload,
+  JwtUser,
+  LoginResponse,
+  LogoutResponse,
+  ForceLogoutResponse,
+  BlacklistStatistics,
+  UserTokenCount,
+};
 
 // Request 接口扩展
 export interface AuthenticatedRequest extends Request {
