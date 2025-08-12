@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { User } from '@prisma/client';
+import type { User } from '@packages/shared';
 
-export abstract class UserSwaggerDto
-  implements Pick<User, 'id' | 'email' | 'name' | 'createdAt' | 'updatedAt'>
-{
+export abstract class UserSwaggerDto implements User {
   private constructor() {}
 
   @ApiProperty({
@@ -35,10 +33,10 @@ export abstract class UserSwaggerDto
   @ApiProperty({
     description: 'The date and time the user was created.',
   })
-  createdAt: Date;
+  createdAt: string;
 
   @ApiProperty({
     description: 'The date and time the user was last updated.',
   })
-  updatedAt: Date;
+  updatedAt: string;
 }
