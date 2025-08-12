@@ -1,7 +1,9 @@
 import { IsNotEmpty, IsString, Length } from '@nestjs/class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import type { LoginRequest } from '@packages/shared';
+import { USER_CONSTRAINTS } from '@packages/shared';
 
-export class AuthLoginDto {
+export class AuthLoginDto implements LoginRequest {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
@@ -11,7 +13,7 @@ export class AuthLoginDto {
   readonly account: string;
 
   @IsString()
-  @Length(8, 16)
+  @Length(USER_CONSTRAINTS.password.minLength, USER_CONSTRAINTS.password.maxLength)
   @IsNotEmpty()
   @ApiProperty({
     example: 'password123',

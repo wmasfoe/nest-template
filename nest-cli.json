@@ -5,6 +5,7 @@
   "compilerOptions": {
     "plugins": ["@nestjs/swagger"],
     "webpack": true,
+    "tsConfigPath": "apps/server/tsconfig.app.json",
     "assets": ["**/*.proto"],
     "watchAssets": true
   }

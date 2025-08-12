@@ -17,13 +17,13 @@
   "homepage": "https://github.com/wmasfoe/nest-template#readme",
   "private": true,
   "license": "MIT",
-
   "scripts": {
     "clean": "rimraf coverage dist node_modules junit.xml test-report.xml yarn.lock package-lock.json",
     "prebuild": "rimraf dist",
     "build": "cross-env NODE_ENV=build nest build",
     "start": "cross-env NODE_ENV=production node dist/main",
     "start:dev": "cross-env NODE_ENV=dev nest start --watch",
+    "start:dev:web": "cross-env NODE_ENV=dev pnpm -F @apps/frontend dev",
     "start:debug": "cross-env NODE_ENV=dev nest start --debug --watch",
     "format": "prettier --write \"apps/**/*.ts\" \"packages/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{apps,packages,test}/**/*.ts\" --fix",
