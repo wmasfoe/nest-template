@@ -10,6 +10,3 @@ export * from './dto/auth';
 // 枚举导出
 export * from './enums/response-codes';
 export * from './enums/common';
-
-// 路由常量导出
-export * from './routes';
