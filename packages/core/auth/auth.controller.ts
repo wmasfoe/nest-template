@@ -95,13 +95,6 @@ export class AuthController {
     return this.authService.login(curLoginInfo);
   }
 
-  // // 保留原有的signIn方法作为兼容
-  // @HttpCode(HttpStatus.OK)
-  // @Post('signin')
-  // signIn(@Body() payload: AuthLoginDto) {
-  //   return this.authService.signIn(payload.account, payload.password);
-  // }
-
   @ApiOperation({
     summary: 'Get user profile',
     description: 'Get current authenticated user profile information',

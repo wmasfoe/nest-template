@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { 
-  BaseResponse, 
-  PaginationResponse, 
-  User, 
+import type {
+  BaseResponse,
+  PaginationResponse,
+  User,
   LoginRequest,
   LoginResponse
 } from '@packages/shared';
-import { ROUTES } from '@packages/shared';
+import { ROUTES } from './services'
 
 const userList = ref<User[]>([]);
 
@@ -94,7 +94,7 @@ const handleLogin = async () => {
   margin-top: 20px;
 }
 
-.container > div.item {
+.container>div.item {
   display: flex;
   flex-flow: row nowrap;
   gap: 4px;
