@@ -8,6 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { BlacklistService } from './services/blacklist.service';
+import { PasswordUtil } from './utils/password.util';
 import { AuthUser, IUserAuthRepository } from './interfaces/user-repository.interface';
 import {
   SafeUser,
@@ -28,13 +29,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly blacklistService: BlacklistService,
+    private readonly passwordUtil: PasswordUtil,
     private readonly logger: Logger,
   ) {}
 
   // Passport本地策略使用的用户验证方法
   async validateUser(account: string, pass: string): Promise<SafeUser | null> {
     const user = await this.userRepository.findUserByEmail(account);
-    if (user && user.password === pass) {
+    if (user && (await this.passwordUtil.verifyPassword(pass, user.password))) {
       const result = omit(user, ['password']);
       return result;
     }

@@ -5,6 +5,7 @@ import {
   AuthUser,
   IUserAuthRepository,
 } from '@packages/core/auth/interfaces/user-repository.interface';
+import { PasswordUtil } from '@packages/core/auth/utils/password.util';
 import { PaginationParams, PaginationResponse } from '@tresdoce-nestjs-toolkit/paas';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
@@ -12,6 +13,7 @@ import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 export class UsersService implements IUserAuthRepository {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly passwordUtil: PasswordUtil,
     private readonly logger: Logger,
   ) {}
 
@@ -44,14 +46,27 @@ export class UsersService implements IUserAuthRepository {
   }
 
   async create(data: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({ data });
+    const hashedPassword = await this.passwordUtil.hashPassword(data.password);
+    return this.prisma.user.create({
+      data: {
+        ...data,
+        password: hashedPassword,
+      },
+    });
   }
 
   async update(id: number, changes: UpdateUserDto): Promise<User> {
     try {
+      const updateData = { ...changes };
+
+      // Hash password if it's being updated
+      if (changes.password) {
+        updateData.password = await this.passwordUtil.hashPassword(changes.password);
+      }
+
       return await this.prisma.user.update({
         where: { id },
-        data: changes,
+        data: updateData,
       });
     } catch {
       throw new NotFoundException(`User #${id} not found`);

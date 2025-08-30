@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { BlacklistService } from './services/blacklist.service';
+import { PasswordUtil } from './utils/password.util';
 import { APP_GUARD } from '@nestjs/core';
 
 export interface AuthModuleOptions {
@@ -46,6 +47,7 @@ export class AuthModule {
         LocalAuthGuard,
         JwtAuthGuard,
         BlacklistService,
+        PasswordUtil,
         {
           provide: APP_GUARD,
           useClass: JwtAuthGuard,
