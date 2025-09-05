@@ -2,7 +2,7 @@
 services:
   mysql:
     image: mysql:8
-    container_name: local-mysql
+    container_name: nest-template
     restart: always
     ports:
       - '3306:3306'

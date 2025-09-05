@@ -91,3 +91,5 @@ prisma/seed
 prisma/seed/*
 ./.prisma/seed
 ./.prisma/seed/*
+
+.mysql-data
